@@ -1,0 +1,12 @@
+Le script Shell prend en paramètre le chemin du fichier CSV contenant les données des stations. Il prend aussi d'autres paramètres afin de choisir les traitements à réaliser.
+
+Ordre des paramètres :
+
+'chemin du fichier' 'type de station' 'type de consommateur' 'identifiant de la centrale'
+
+Options possibles : 
+
+	- type de station : hvb, hva, lv
+	- type de consommateur : comme, individu, all
+	- ATTENTION, on ne peut pas avoir les combinaisons suivantes : hvb all, hvb indiv, hva all, hva indiv
+
