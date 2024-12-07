@@ -63,3 +63,15 @@ if [ ! -f "$fichier" ]; then
     cat aide.txt
     exit 1
 fi
+
+if [ ! -f "$fichier" ]; then
+    echo "ERREUR. Le fichier passé en paramètres n'existe pas."
+    cat aide.txt
+    exit 1
+fi
+
+if [ ! -d "tmp" ]; then
+    mkdir tmp
+else
+    rm -rf tmp/* # voir si cette redaction n'est pas trop risqué
+fi
