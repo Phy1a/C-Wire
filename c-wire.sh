@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 # On vérifie si l'option -h est passée en argument
 for arg in "$@"; do
     if [ "$arg" == "-h" ]; then
@@ -18,6 +17,14 @@ if [ $# -lt 3 ] || [ $# -gt 4 ]; then
     exit 1
 fi
 
+#Vérification si tmp existe si oui le suprimer et le creer
+if [ -d "tmp" ]; then
+    rm -rf "tmp"
+fi
+mkdir "tmp"
+
+
+#Initialisation des variables.
 fichier=$1
 station=$2
 consommateur=$3
@@ -53,13 +60,11 @@ if [[ "$conso" != "comp" && "$conso" != "indiv" && "$conso" != "all" ]]; then
     exit 1
 fi
 
-if [ ! -d "tmp" ]; then
-    mkdir tmp
-else
-    rm -rf tmp/* # voir si cette redaction n'est pas trop risqué
-fi
 
-# Vérification de la combinaison de station et conso
+#Initialisation du temps d'éxécution
+debut=$(date +%s)
+
+# Vérification de la combinaison de station et conso et filtrage des données
 case "$station $conso" in
 	"hva indiv" | "hva all")
 		echo "Erreur : '$station $conso' n'est pas une combinaison valide. Essayez 'hva comp'."
@@ -70,19 +75,54 @@ case "$station $conso" in
         	exit 1
         ;;
         "hvb comp")
-        	grep -E "^$centrale;[0-9]+;-;-;[^;]+;-;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 2,7,8 | tr '-' '0' > resultat.txt  
+        	if [[ -n "$centrale" ]]; then
+            		# Si une centrale est spécifiée, l'ajouter au nom du fichier
+            		output_file="${station}_${conso}_${centrale}.csv"
+        	else
+            		# Sinon, ne pas ajouter de numéro de centrale
+            		output_file="${station}_${conso}.csv"
+        	fi
+        	grep -E "^$centrale;[0-9]+;-;-;[^;]+;-;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 2,7,8 | tr '-' '0' > "tmp/$output_file"  
         ;;
         "hva comp")
-        	grep -E "^$centrale;-;[0-9]+;-;[^;]+;-;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 2,7,8 | tr '-' '0' > resultat.txt  
+        	if [[ -n "$centrale" ]]; then
+            		# Si une centrale est spécifiée, l'ajouter au nom du fichier
+            		output_file="${station}_${conso}_${centrale}.csv"
+        	else
+            		# Sinon, ne pas ajouter de numéro de centrale
+            		output_file="${station}_${conso}.csv"
+        	fi
+        	grep -E "^$centrale;-;[0-9]+;-;[^;]+;-;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 3,7,8 | tr '-' '0' > "tmp/$output_file"  
         ;;
         "lv comp")
-        	grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;-;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 2,7,8 | tr '-' '0' > resultat.txt  
+        	if [[ -n "$centrale" ]]; then
+            		# Si une centrale est spécifiée, l'ajouter au nom du fichier
+            		output_file="${station}_${conso}_${centrale}.csv"
+        	else
+            		# Sinon, ne pas ajouter de numéro de centrale
+            		output_file="${station}_${conso}.csv"
+        	fi
+        	grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;-;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/$output_file"
         ;;
         "lv indiv")
-        	grep -E "^$centrale;-;[^;]+;[0-9]+;-;[^;];[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 2,7,8 | tr '-' '0' > resultat.txt  
+        	if [[ -n "$centrale" ]]; then
+            		# Si une centrale est spécifiée, l'ajouter au nom du fichier
+            		output_file="${station}_${conso}_${centrale}.csv"
+        	else
+            		# Sinon, ne pas ajouter de numéro de centrale
+            		output_file="${station}_${conso}.csv"
+        	fi
+        	grep -E "^$centrale;-;[^;]+;[0-9]+;-;[^;]+;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/$output_file"
         ;;
         "lv all")
-        	grep -E "^$centrale;-;[^;]+;[0-9]+;[^;];[^;];[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 2,7,8 | tr '-' '0' > resultat.txt  
+        	if [[ -n "$centrale" ]]; then
+            		# Si une centrale est spécifiée, l'ajouter au nom du fichier
+            		output_file="${station}_${conso}_${centrale}.csv"
+        	else
+            		# Sinon, ne pas ajouter de numéro de centrale
+            		output_file="${station}_${conso}.csv"
+        	fi
+        	grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;[^;]+;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/$output_file"  
         ;;
         *)
         	echo "Erreur : combinaison station/conso invalide."
@@ -90,3 +130,12 @@ case "$station $conso" in
 		;;
         
 esac
+
+# progc (tri)
+
+#arret du temps
+fin=$(date +%s)
+temps=$((fin - debut))
+echo "$temps"  
+#fin
+
