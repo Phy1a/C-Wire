@@ -65,69 +65,74 @@ fi
 debut=$(date +%s)
 
 # Vérification de la combinaison de station et conso et filtrage des données
-case "$station $conso" in
-	"hva indiv" | "hva all")
-		echo "Erreur : '$station $conso' n'est pas une combinaison valide. Essayez 'hva comp'."
-        	exit 1
+case "$station $consommateur" in
+    'hva indiv' | 'hva all')
+        echo "Erreur : '$station $consommateur' n'est pas une combinaison valide. Essayez 'hva comp'."
+            exit 1
         ;;
-        "hvb indiv" | "hvb all")
-        	echo "Erreur : '$station $conso' n'est pas une combinaison valide. Essayez 'hvb comp'."
-        	exit 1
+        'hvb indiv' | 'hvb all')
+            echo "Erreur : '$station $consommateur' n'est pas une combinaison valide. Essayez 'hvb comp'."
+            exit 1
         ;;
-        "hvb comp")
-        	if [[ -n "$centrale" ]]; then
-            		# Si une centrale est spécifiée, l'ajouter au nom du fichier
-            		output_file="${station}_${conso}_${centrale}.csv"
-        	else
-            		# Sinon, ne pas ajouter de numéro de centrale
-            		output_file="${station}_${conso}.csv"
-        	fi
-        	grep -E "^$centrale;[0-9]+;-;-;[^;]+;-;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 2,7,8 | tr '-' '0' > "tmp/$output_file"  
+        'hvb comp')
+            if [ -n "$centrale" ]; then
+                    # Si une centrale est spécifiée, l'ajouter au nom du fichier
+                    output_file="${station}_${consommateur}_${centrale}.csv"
+                    grep -E "^$centrale;[0-9]+;-;-;[^;]+;-;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 2,7,8 | tr '-' '0' > "tmp/$output_file"
+            else
+                    # Sinon, ne pas ajouter de numéro de centrale
+                    output_file="${station}_${consommateur}.csv"
+                    grep -E "^[0-9]+;[0-9]+;-;-;[^;]+;-;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 2,7,8 | tr '-' '0' > "tmp/$output_file"
+            fi
         ;;
-        "hva comp")
-        	if [[ -n "$centrale" ]]; then
-            		# Si une centrale est spécifiée, l'ajouter au nom du fichier
-            		output_file="${station}_${conso}_${centrale}.csv"
-        	else
-            		# Sinon, ne pas ajouter de numéro de centrale
-            		output_file="${station}_${conso}.csv"
-        	fi
-        	grep -E "^$centrale;-;[0-9]+;-;[^;]+;-;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 3,7,8 | tr '-' '0' > "tmp/$output_file"  
+        'hva comp')
+            if [ -n "$centrale" ]; then
+                    # Si une centrale est spécifiée, l'ajouter au nom du fichier
+                    output_file="${station}_${consommateur}_${centrale}.csv"
+                    grep -E "^$centrale;-;[0-9]+;-;[^;]+;-;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 3,7,8 | tr '-' '0' > "tmp/$output_file"
+            else
+                    # Sinon, ne pas ajouter de numéro de centrale
+                    output_file="${station}_${consommateur}.csv"
+                    grep -E "^[0-9]+;-;[0-9]+;-;[^;]+;-;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 3,7,8 | tr '-' '0' > "tmp/$output_file"
+            fi
         ;;
-        "lv comp")
-        	if [[ -n "$centrale" ]]; then
-            		# Si une centrale est spécifiée, l'ajouter au nom du fichier
-            		output_file="${station}_${conso}_${centrale}.csv"
-        	else
-            		# Sinon, ne pas ajouter de numéro de centrale
-            		output_file="${station}_${conso}.csv"
-        	fi
-        	grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;-;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/$output_file"
+        'lv comp')
+            if [ -n "$centrale" ]; then
+                    # Si une centrale est spécifiée, l'ajouter au nom du fichier
+                    output_file="${station}_${consommateur}_${centrale}.csv"
+                    grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;-;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/$output_file"
+            else
+                    # Sinon, ne pas ajouter de numéro de centrale
+                    output_file="${station}_${consommateur}.csv"
+                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;[^;]+;-;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/$output_file"
+            fi
         ;;
-        "lv indiv")
-        	if [[ -n "$centrale" ]]; then
-            		# Si une centrale est spécifiée, l'ajouter au nom du fichier
-            		output_file="${station}_${conso}_${centrale}.csv"
-        	else
-            		# Sinon, ne pas ajouter de numéro de centrale
-            		output_file="${station}_${conso}.csv"
-        	fi
-        	grep -E "^$centrale;-;[^;]+;[0-9]+;-;[^;]+;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/$output_file"
+        'lv indiv')
+            if [ -n "$centrale" ]; then
+                    # Si une centrale est spécifiée, l'ajouter au nom du fichier
+                    output_file="${station}_${consommateur}_${centrale}.csv"
+                    grep -E "^$centrale;-;[^;]+;[0-9]+;-;[^;]+;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/$output_file"
+            else
+                    # Sinon, ne pas ajouter de numéro de centrale
+                    output_file="${station}_${consommateur}.csv"
+                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;-;[^;]+;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/$output_file"
+            fi
         ;;
         "lv all")
-        	if [[ -n "$centrale" ]]; then
-            		# Si une centrale est spécifiée, l'ajouter au nom du fichier
-            		output_file="${station}_${conso}_${centrale}.csv"
-        	else
-            		# Sinon, ne pas ajouter de numéro de centrale
-            		output_file="${station}_${conso}.csv"
-        	fi
-        	grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;[^;]+;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/$output_file"  
+            if [ -n "$centrale" ]; then
+                    # Si une centrale est spécifiée, l'ajouter au nom du fichier
+                    output_file="${station}_${consommateur}_${centrale}.csv"
+                    grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;[^;]+;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/$output_file"
+            else
+                    # Sinon, ne pas ajouter de numéro de centrale
+                    output_file="${station}_${consommateur}.csv"
+                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;[^;]+;[^;]+;[^;]+;[^;]+" c-wire_v00.dat | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/$output_file"
+            fi
         ;;
         *)
-        	echo "Erreur : combinaison station/conso invalide."
-		exit 1
-		;;
+            echo "Erreur : combinaison station/conso invalide."
+        exit 1
+        ;;
         
 esac
 
