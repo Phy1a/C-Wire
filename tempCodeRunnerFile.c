@@ -1,1 +1,3 @@
-count
+no) );
+        exit(1);
+    }
