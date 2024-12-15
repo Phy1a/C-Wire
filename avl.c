@@ -14,6 +14,7 @@ typedef struct _avl{
 	Data data;
 	struct _avl *left;
 	struct _avl *right;
+	int sum;
 	int balance;
 } AVL;
 
@@ -35,6 +36,7 @@ AVL *createAVL(Data d){
 	a->left = NULL;
 	a->right = NULL;
 	a->balance = 0;
+	a->sum = a->data.capacity +  a->data.load;
 	return a;
 }
 
@@ -53,7 +55,7 @@ AVL *findInAVL(AVL *a, int v){
 
 void parcourPrefixe(AVL *a){
 	if (a != NULL){
-		printf("(Id : %d ,Capacity : %d, Load : %d, Balance : %d) ", a->data.id, a->data.capacity, a->data.load, a->balance);
+		printf("(Id : %d ,Capacity : %d, Load : %d, Balance : %d, Sum : %d) ", a->data.id, a->data.capacity, a->data.load, a->balance, a->sum);
 		parcourPrefixe(a->left);
 		parcourPrefixe(a->right);
 	}
@@ -77,8 +79,12 @@ void rotateRight(AVL **a){
 	int eq_n, eq_a;
 
 	AVL *new = (*a)->left;
+	(*a)->sum -= new->sum;
 	(*a)->left = new->right;
+	if((*a)->left != NULL)
+		(*a)->sum += new->right->sum;
 	new->right = (*a);
+	new->sum += (*a)->sum;
 
 	eq_a = (*a)->balance;
 	eq_n = new->balance;
@@ -93,8 +99,12 @@ void rotateLeft(AVL **a){
 	int eq_n, eq_a;
 
 	AVL *new = (*a)->right;
+	(*a)->sum -= new->sum;
 	(*a)->right = new->left;
+	if((*a)->right != NULL)
+		(*a)->sum += new->left->sum;
 	new->left = (*a);
+	new->sum += (*a)->sum;
 
 	eq_a = (*a)->balance;
 	eq_n = new->balance;
@@ -133,18 +143,20 @@ void equilibrium(AVL **a){
 }
 
 
-void insertAVL1(AVL** a, Data d, int *b){
+void insertAVL_exe(AVL** a, Data d, int *b){
 
 	if(*a==NULL){
 		AVL *new = createAVL(d);
 		if (new==NULL)
 			exit(1);
 		*a = new;
+		return;
 	}
 
 	if((*a)->data.id != d.id){
+		(*a)->sum += d.load + d.capacity;
 		if((*a)->data.id > d.id){
-			insertAVL1(&((*a)->left),d,b);
+			insertAVL_exe(&((*a)->left),d,b);
 			if (*b){
 				(*a)->balance -= *b;
 				equilibrium(a);
@@ -152,27 +164,27 @@ void insertAVL1(AVL** a, Data d, int *b){
 			}
 		}
 		else{
-			insertAVL1(&((*a)->right),d,b);
+			insertAVL_exe(&((*a)->right),d,b);
 			if (*b){
 				(*a)->balance += *b;
 				equilibrium(a);
 				*b = abs((*a)->balance);
-				}
 			}
 		}
 	}
+}
 
 
 void insertAVL(AVL** a, Data d){
 	int b = 1;
-	insertAVL1(a,d,&b);
+	insertAVL_exe(a,d,&b);
 }
 
 
 void main(){
-	 Data d = {5,56,45};
-	 Data d2 = {4,56,45};
-	 Data d3 = {3,56,45};
+	 Data d = {3,3,0};
+	 Data d2 = {4,7,0};
+	 Data d3 = {5,0,5};
 	 AVL *a = createAVL(d);
 	 printf("\n");
 	 insertAVL(&a,d2);
