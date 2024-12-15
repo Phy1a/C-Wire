@@ -7,6 +7,7 @@ Ordre des paramètres :
 Options possibles : 
 
 	- type de station : hvb, hva, lv
-	- type de consommateur : comme, individu, all
+	- type de consommateur : comp, indiv, all
+	- identifiant de la centrale : compris entre 1 et 5 inclus
 	- ATTENTION, on ne peut pas avoir les combinaisons suivantes : hvb all, hvb indiv, hva all, hva indiv
 
