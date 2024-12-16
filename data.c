@@ -22,7 +22,7 @@ Data *initData() {
 
 
 void printData(Data d){
-    printf("%d;%d;%d;%d;%d;%d;%llu;%llu\n", d.id,d.hvb_id,d.hva_id,d.lv_id, d.company_id, d.individual_id, d.capacity, d.load);
+    printf("%d;%llu;%llu\n", d.id, d.capacity, d.load);
 }
 
 
@@ -36,13 +36,8 @@ void addCharToStr(char* sentence, char c){
 int fillData(Data *data ,int number,unsigned long long value){ // fill a data struct arguments n°number with value
     switch(number){
         case 0: data->id = value; break;
-        case 1: data->hvb_id = value; break;
-        case 2: data->hva_id = value; break;
-        case 3: data->lv_id = value; break;
-        case 4: data->company_id = value; break;
-        case 5: data->individual_id = value; break;
-        case 6: data->capacity = value; break;
-        case 7: data->load = value; break;
+        case 1: data->capacity = value; break;
+        case 2: data->load = value; break;
         default : printf("Error wrong argument\n"); break;
     }
 }

@@ -7,7 +7,8 @@
 
 int main(){
     FILE* file = NULL;
-    file = fopen("C:/Users/PC/Downloads/c-wire00.dat", "r+");
+    //file = fopen("C:/Users/PC/Downloads/c-wire00.dat", "r+");
+    file = fopen("C:/Users/PC/Downloads/002.dat", "r+");
     //file = fopen("c-wire00.dat", "r+");
     if (file == NULL){
         printf("Imposible to open file\n");
@@ -26,7 +27,9 @@ int main(){
     AVL *a = NULL;
 
     while (fgets(sentence,49,file) != NULL){
+        printf("%s",sentence);
         d = transcript(file, sentence);
+        printData(*d);
         if (d==NULL)
             return 1;
         if(insertAVL(&a,*d)) // error detected
