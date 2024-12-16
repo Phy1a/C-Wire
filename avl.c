@@ -3,21 +3,6 @@
 #include <errno.h>
 #include "avl.h"
 
-typedef struct {
-	int id;
-    unsigned long long capacity;
-    unsigned long long load; // either consumption or production depending on the entity (central or consummer)
-} Data;
-
-
-typedef struct _avl{
-	Data data;
-	struct _avl *left;
-	struct _avl *right;
-	unsigned long long sum;
-	int balance;
-} AVL;
-
 
 int max(int a, int b){
 	return (a >= b) ? a : b;
@@ -158,7 +143,7 @@ void insertAVL_exe(AVL** a, Data d, int *b, int *error){
 	if((*a)->data.id != d.id){
 		(*a)->sum += d.load + d.capacity;
 		if((*a)->data.id > d.id){
-			insertAVL_exe(&((*a)->left),d,b);
+			insertAVL_exe(&((*a)->left),d,b,error);
 			if (*b){
 				(*a)->balance -= *b;
 				equilibrium(a);
@@ -166,7 +151,7 @@ void insertAVL_exe(AVL** a, Data d, int *b, int *error){
 			}
 		}
 		else{
-			insertAVL_exe(&((*a)->right),d,b);
+			insertAVL_exe(&((*a)->right),d,b,error);
 			if (*b){
 				(*a)->balance += *b;
 				equilibrium(a);
