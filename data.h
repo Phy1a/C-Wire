@@ -5,11 +5,6 @@
 
 typedef struct {
     short id;
-    short hvb_id;
-    short hva_id;
-    short lv_id;
-    int company_id;
-    int individual_id;
     unsigned long long capacity;
     unsigned long long load;
 } Data;

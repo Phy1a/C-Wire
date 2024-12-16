@@ -9,11 +9,6 @@ Data *initData() {
     if (d==NULL)
         exit(1);
     d->id = 0;
-    d->hvb_id = 0;
-    d->hva_id = 0;
-    d->lv_id = 0;
-    d->company_id = 0;
-    d->individual_id = 0;
     d->capacity = 0;
     d->load= 0;
     

@@ -27,9 +27,7 @@ int main(){
     AVL *a = NULL;
 
     while (fgets(sentence,49,file) != NULL){
-        printf("%s",sentence);
         d = transcript(file, sentence);
-        printData(*d);
         if (d==NULL)
             return 1;
         if(insertAVL(&a,*d)) // error detected
