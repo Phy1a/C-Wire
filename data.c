@@ -57,7 +57,7 @@ Data *transcript(FILE *file, char *line){
     unsigned long long value;
     char *end;
 
-    while (line[cursor] != '\0' && count<7){
+    while (line[cursor] != '\0' && count<2){
         if(line[cursor] == '-'){ //empty value to replace later by 0
             cursor++;
             count++;
@@ -96,7 +96,7 @@ Data *transcript(FILE *file, char *line){
             free(data);
             return NULL;
         }
-        fillData(data, 7, value);
+        fillData(data, 2, value);
     }
     
     return data;

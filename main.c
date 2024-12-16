@@ -34,8 +34,8 @@ int main(){
     }
     
     //recup donner dans arbre et mettre dans le fihier de sorti
-    // fermer fichier de sorti
-    parcourPrefixe(a);
+    //fermer fichier de sorti
+    parcourInfixe(a); // view results
     deleteTree(&a);
     
     fclose(file);

@@ -38,11 +38,11 @@ AVL *findInAVL(AVL *a, int v){
 }
 
 
-void parcourPrefixe(AVL *a){
+void parcourInfixe(AVL *a){
 	if (a != NULL){
-		printf("(Id : %d ,Capacity : %llu, Load : %llu, Balance : %d, Sum : %llu) ", a->data.id, a->data.capacity, a->data.load, a->balance, a->sum);
-		parcourPrefixe(a->left);
-		parcourPrefixe(a->right);
+		parcourInfixe(a->left);
+		printf("(Id : %d ,Capacity : %llu, Load : %llu, Balance : %d, Sum : %llu) \n", a->data.id, a->data.capacity, a->data.load, a->balance, a->sum);
+		parcourInfixe(a->right);
 	}
 }
 

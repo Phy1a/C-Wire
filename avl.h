@@ -17,7 +17,7 @@ int abs(int v);
 
 AVL *createAVL(Data d);
 AVL *findInAVL(AVL *a, int v);
-void parcourPrefixe(AVL *a);
+void parcourInfixe(AVL *a);
 void deleteTree(AVL **a);
 void rotateRight(AVL **a);
 void rotateLeft(AVL **a);
