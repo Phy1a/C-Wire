@@ -1,12 +1,12 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include "avl.h"
 
 typedef struct {
 	int id;
-    int capacity;
-    int load; // either consumption or production depending on the entity (central or consummer)
+    unsigned long long capacity;
+    unsigned long long load; // either consumption or production depending on the entity (central or consummer)
 } Data;
 
 
@@ -14,7 +14,7 @@ typedef struct _avl{
 	Data data;
 	struct _avl *left;
 	struct _avl *right;
-	int sum;
+	unsigned long long sum;
 	int balance;
 } AVL;
 
@@ -55,7 +55,7 @@ AVL *findInAVL(AVL *a, int v){
 
 void parcourPrefixe(AVL *a){
 	if (a != NULL){
-		printf("(Id : %d ,Capacity : %d, Load : %d, Balance : %d, Sum : %d) ", a->data.id, a->data.capacity, a->data.load, a->balance, a->sum);
+		printf("(Id : %d ,Capacity : %llu, Load : %llu, Balance : %d, Sum : %llu) ", a->data.id, a->data.capacity, a->data.load, a->balance, a->sum);
 		parcourPrefixe(a->left);
 		parcourPrefixe(a->right);
 	}
@@ -143,12 +143,14 @@ void equilibrium(AVL **a){
 }
 
 
-void insertAVL_exe(AVL** a, Data d, int *b){
+void insertAVL_exe(AVL** a, Data d, int *b, int *error){
 
 	if(*a==NULL){
 		AVL *new = createAVL(d);
-		if (new==NULL)
-			exit(1);
+		if (new==NULL){
+			*error = 1;
+			return;
+		}
 		*a = new;
 		return;
 	}
@@ -175,47 +177,9 @@ void insertAVL_exe(AVL** a, Data d, int *b){
 }
 
 
-void insertAVL(AVL** a, Data d){
+int insertAVL(AVL** a, Data d){
+	int error = 0;
 	int b = 1;
-	insertAVL_exe(a,d,&b);
+	insertAVL_exe(a,d,&b, &error);
+	return error;
 }
-
-
-void main(){
-	 Data d = {3,3,0};
-	 Data d2 = {4,7,0};
-	 Data d3 = {5,0,5};
-	 AVL *a = createAVL(d);
-	 printf("\n");
-	 insertAVL(&a,d2);
-	 insertAVL(&a,d3);
-	 parcourPrefixe(a);
-	 printf("\n");
-	 parcourPrefixe(findInAVL(a,5));
-	 printf("\n");
-	 deleteTree(&a);
-	 printf("Deleted tree\n");
-	 parcourPrefixe(a);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

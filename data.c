@@ -1,18 +1,7 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-
-typedef struct {
-    short id;
-    short hvb_id;
-    short hva_id;
-    short lv_id;
-    int company_id;
-    int individual_id;  //individual consummer only
-    unsigned long long capacity;
-    unsigned long long load; // either consumption or production depending on the entity (central or consummer)
-} Data;
+#include "data.h"
 
 
 Data *initData() {
@@ -111,29 +100,4 @@ Data *transcript(FILE *file, char *line){
     }
     
     return data;
-}
-
-
-void main(){
-    FILE* file = NULL;
-    file = fopen("C:/Users/PC/Downloads/c-wire00.dat", "r+");
-    //file = fopen("c-wire00.dat", "r+");
-    if (file == NULL){
-        printf("Imposible to open file\n");
-        printf("Error code = %d \n", errno );
-        printf("Error message = %s \n", strerror(errno) );
-        exit(1);
-    }
-    char sentence[85];
-    
-    fgets(sentence,83,file); // first line is 83 caracteres long
-    printf("%s\n",sentence);
-
-    Data *test1 = initData();
-
-    while (fgets(sentence,49,file) != NULL){
-         test1 = transcript(file, sentence);
-         printData(*test1);
-    }
-    fclose(file);
 }
