@@ -10,8 +10,8 @@ typedef struct {
     short lv_id;
     int company_id;
     int individual_id;  //individual consummer only
-    unsigned long capacity;
-    unsigned long load; // either consumption or production depending on the entity (central or consummer)
+    unsigned long long capacity;
+    unsigned long long load; // either consumption or production depending on the entity (central or consummer)
 } Data;
 
 
@@ -44,7 +44,7 @@ void addCharToStr(char* sentence, char c){
 }
 
 
-int fillData(Data *data ,int number,unsigned long value){ // fill a data struct arguments n°number with value
+int fillData(Data *data ,int number,unsigned long long value){ // fill a data struct arguments n°number with value
     switch(number){
         case 0: data->id = value; break;
         case 1: data->hvb_id = value; break;
@@ -65,7 +65,7 @@ Data *transcript(FILE *file, char *line){
     char futureInt[50] = ""; // char* to be converted into int
     Data *data = initData(); // return value
 
-    unsigned long value;
+    unsigned long long value;
     char *end;
 
     while (line[cursor] != '\0' && count<7){
@@ -128,20 +128,12 @@ void main(){
     
     fgets(sentence,83,file); // first line is 83 caracteres long
     printf("%s\n",sentence);
-    fgets(sentence,60,file);
-    fgets(sentence,60,file);
-    fgets(sentence,60,file);
+
     Data *test1 = initData();
 
-    fillData(test1,6,54532452123); // to fix
-    printData(*test1);
-
-    // test1 = transcript(file, sentence);
-    // printData(*test1);
-
-    // while (fgets(sentence,49,file) != NULL){
-    //      Data *test1 = transcript(file, sentence);
-    //      printData(*test1);
-    // }
+    while (fgets(sentence,49,file) != NULL){
+         test1 = transcript(file, sentence);
+         printData(*test1);
+    }
     fclose(file);
 }
