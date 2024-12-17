@@ -25,12 +25,13 @@ consommateur=$3
 # Si le nombre d'arguments est 4, on définit "centrale" comme le dernier argument
 if [ $# -eq 4 ]; then
     centrale=$4
-    if [[ -n "$centrale" ]] && [[ ! "$centrale" =~ ^[1-5]$ ]]; then
+    if [[ -n "$centrale" ]] && [[ ! "$centrale" =~ ^[1-9][0-9]*$ ]]; then
         echo "ERREUR. Le numéro de la centrale passé en paramètres est incorrect."
         cat aide.txt
         exit 1
     fi
 else
+    #si il n'y a pas le parametre centrale, alors la centrale peut etre egale à n'importe quel entier positif (sauf 0)
     centrale="[1-9][0-9]*"
 fi
 
