@@ -7,7 +7,7 @@ typedef struct _avl{
 	Data data;
 	struct _avl *left;
 	struct _avl *right;
-	unsigned long long sum;
+	//unsigned long long sum;
 	int balance;
 } AVL;
 
@@ -17,7 +17,7 @@ int abs(int v);
 
 AVL *createAVL(Data d);
 AVL *findInAVL(AVL *a, int v);
-void parcourInfixe(AVL *a);
+void AVLtoFile(AVL *a, FILE *f);
 void deleteTree(AVL **a);
 void rotateRight(AVL **a);
 void rotateLeft(AVL **a);

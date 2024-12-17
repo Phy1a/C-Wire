@@ -48,7 +48,7 @@ Data *transcript(FILE *file, char *line){
     char *end;
 
     while (line[cursor] != '\0' && count<2){
-        if(line[cursor] == '-'){ //empty value to replace later by 0
+        if(line[cursor] == '0' && line[cursor-1] == ';'){
             cursor++;
             count++;
         }
@@ -74,20 +74,17 @@ Data *transcript(FILE *file, char *line){
         cursor++; // to check
     }
 
-    // Last data without ; at the end
-    if(line[cursor] != '-'){
-        while (line[cursor+1] != '\0'){ // +1 because of the space at the end of each line
-            addCharToStr(futureInt,line[cursor]);
-            cursor++;
-        }
-        value = strtoull(futureInt, &end, 10);
-        if (*end != '\0'){
-            printf("Error: invalid value : %s\n", futureInt);
-            free(data);
-            return NULL;
-        }
-        fillData(data, 2, value);
+    while (line[cursor+1] != '\0'){ // +1 because of the space at the end of each line
+        addCharToStr(futureInt,line[cursor]);
+        cursor++;
     }
+    value = strtoull(futureInt, &end, 10);
+    if (*end != '\0'){
+        printf("Error: invalid value : %s\n", futureInt);
+        free(data);
+        return NULL;
+    }
+    fillData(data, 2, value);
     
     return data;
 }

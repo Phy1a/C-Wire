@@ -31,7 +31,7 @@ if [ $# -eq 4 ]; then
         exit 1
     fi
 else
-    centrale="[1-9][0-9]*"
+    centrale="[1-9][0-9]*" # si la centrale n'est pas spécifiée, on prend toutes les centrales
 fi
 
 # Vérification de l'existence du fichier CSV
@@ -135,7 +135,7 @@ case "$station $consommateur" in
         ;;
         *)
             echo "Erreur : combinaison station/consommateur invalide."
-        exit 1#voir si utile
+        exit 1 #voir si utile
         ;;
         
 esac

@@ -21,7 +21,7 @@ AVL *createAVL(Data d){
 	a->left = NULL;
 	a->right = NULL;
 	a->balance = 0;
-	a->sum = a->data.capacity +  a->data.load;
+	//a->sum = a->data.capacity +  a->data.load;
 	return a;
 }
 
@@ -38,11 +38,11 @@ AVL *findInAVL(AVL *a, int v){
 }
 
 
-void parcourInfixe(AVL *a){
+void AVLtoFile(AVL *a, FILE *f){
 	if (a != NULL){
-		parcourInfixe(a->left);
-		printf("(Id : %d ,Capacity : %llu, Load : %llu, Balance : %d, Sum : %llu) \n", a->data.id, a->data.capacity, a->data.load, a->balance, a->sum);
-		parcourInfixe(a->right);
+		AVLtoFile(a->left,f);
+		fprintf(f,"%d:%llu:%llu\n", a->data.id, a->data.capacity, a->data.load);
+		AVLtoFile(a->right,f);
 	}
 }
 
@@ -64,12 +64,12 @@ void rotateRight(AVL **a){
 	int eq_n, eq_a;
 
 	AVL *new = (*a)->left;
-	(*a)->sum -= new->sum;
+	//(*a)->sum -= new->sum;
 	(*a)->left = new->right;
-	if((*a)->left != NULL)
-		(*a)->sum += new->right->sum;
+	// if((*a)->left != NULL)
+	// 	(*a)->sum += new->right->sum;
 	new->right = (*a);
-	new->sum += (*a)->sum;
+	//new->sum += (*a)->sum;
 
 	eq_a = (*a)->balance;
 	eq_n = new->balance;
@@ -84,12 +84,12 @@ void rotateLeft(AVL **a){
 	int eq_n, eq_a;
 
 	AVL *new = (*a)->right;
-	(*a)->sum -= new->sum;
+	//(*a)->sum -= new->sum;
 	(*a)->right = new->left;
-	if((*a)->right != NULL)
-		(*a)->sum += new->left->sum;
+	// if((*a)->right != NULL)
+	// 	(*a)->sum += new->left->sum;
 	new->left = (*a);
-	new->sum += (*a)->sum;
+	//new->sum += (*a)->sum;
 
 	eq_a = (*a)->balance;
 	eq_n = new->balance;
@@ -140,23 +140,23 @@ void insertAVL_exe(AVL** a, Data d, int *b, int *error){
 		return;
 	}
 
-	if((*a)->data.id != d.id){
-		(*a)->sum += d.load + d.capacity;
-		if((*a)->data.id > d.id){
-			insertAVL_exe(&((*a)->left),d,b,error);
-			if (*b){
-				(*a)->balance -= *b;
-				equilibrium(a);
-				*b = abs((*a)->balance);
-			}
+	if((*a)->data.id == d.id)
+		(*a)->data.load += d.load;
+		// (*a)->sum += d.load + d.capacity;
+	else if((*a)->data.id > d.id){
+		insertAVL_exe(&((*a)->left),d,b,error);
+		if (*b){
+			(*a)->balance -= *b;
+			equilibrium(a);
+			*b = abs((*a)->balance);
 		}
-		else{
-			insertAVL_exe(&((*a)->right),d,b,error);
-			if (*b){
-				(*a)->balance += *b;
-				equilibrium(a);
-				*b = abs((*a)->balance);
-			}
+		}
+	else{
+		insertAVL_exe(&((*a)->right),d,b,error);
+		if (*b){
+			(*a)->balance += *b;
+			equilibrium(a);
+			*b = abs((*a)->balance);
 		}
 	}
 }
