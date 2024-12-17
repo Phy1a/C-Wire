@@ -30,9 +30,13 @@ if [ $# -eq 4 ]; then
         cat aide.txt
         exit 1
     fi
-else
-    #si il n'y a pas le parametre centrale, alors la centrale peut etre egale à n'importe quel entier positif (sauf 0)
-    centrale="[1-9][0-9]*"
+fi
+
+# On vérifie que le chemin du fichier est correct
+if [ ! -f "$fichier" ]; then
+    echo "ERREUR. Le chemin du fichier passé en paramètres est incorrect."
+    cat aide.txt
+    exit 1
 fi
 
 # Vérification de l'existence du fichier CSV
@@ -65,10 +69,19 @@ else
     rm tmp/*
 fi
 
+# Compilation du programme C
+make clean && make
+
+if [ $? -ne 0 ]; then
+    echo "La compilation a échoué"
+    exit 1
+fi
+
 #Initialisation du temps d'éxécution
 debut=$(date +%s)
 
 # Vérification de la combinaison de station et conso et filtrage des données
+echo "Filtrage des données en cours..."
 case "$station $consommateur" in
     'hva indiv' | 'hva all')
         echo "Erreur : '$station $consommateur' n'est pas une combinaison valide. Essayez 'hva comp'."
@@ -80,72 +93,77 @@ case "$station $consommateur" in
         ;;
         'hvb comp')
             if [ -n "$centrale" ]; then
-                    # Si une centrale est spécifiée, l'ajouter au nom du fichier
-                    output_file="${station}_${consommateur}_${centrale}.csv"
-                    grep -E "^$centrale;[0-9]+;-;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 2,7,8 | tr '-' '0' > "tmp/$output_file"
+                    grep -E "^$centrale;[0-9]+;-;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 2,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
                     
             else
-                    # Sinon, ne pas ajouter de numéro de centrale
-                    output_file="${station}_${consommateur}.csv"
-                    grep -E "^[0-9]+;[0-9]+;-;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 2,7,8 | tr '-' '0' > "tmp/$output_file"
+                    grep -E "^[0-9]+;[0-9]+;-;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 2,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
             fi
         ;;
         'hva comp')
             if [ -n "$centrale" ]; then
-                    # Si une centrale est spécifiée, l'ajouter au nom du fichier
-                    output_file="${station}_${consommateur}_${centrale}.csv"
-                    grep -E "^$centrale;-;[0-9]+;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 3,7,8 | tr '-' '0' > "tmp/$output_file"
+                    grep -E "^$centrale;[^;]+;[0-9]+;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 3,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
             else
-                    # Sinon, ne pas ajouter de numéro de centrale
-                    output_file="${station}_${consommateur}.csv"
-                    grep -E "^[0-9]+;-;[0-9]+;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 3,7,8 | tr '-' '0' > "tmp/$output_file"
+                    grep -E "^[0-9]+;[^;]+;[0-9]+;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 3,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
             fi
         ;;
         'lv comp')
             if [ -n "$centrale" ]; then
-                    # Si une centrale est spécifiée, l'ajouter au nom du fichier
-                    output_file="${station}_${consommateur}_${centrale}.csv"
-                    grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/$output_file"
+                    grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
             else
-                    # Sinon, ne pas ajouter de numéro de centrale
-                    output_file="${station}_${consommateur}.csv"
-                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/$output_file"
+                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
             fi
         ;;
         'lv indiv')
             if [ -n "$centrale" ]; then
-                    # Si une centrale est spécifiée, l'ajouter au nom du fichier
-                    output_file="${station}_${consommateur}_${centrale}.csv"
-                    grep -E "^$centrale;-;[^;]+;[0-9]+;-;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/$output_file"
+                    grep -E "^$centrale;-;[^;]+;[0-9]+;-;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
             else
-                    # Sinon, ne pas ajouter de numéro de centrale
-                    output_file="${station}_${consommateur}.csv"
-                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;-;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/$output_file"
+                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;-;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
             fi
         ;;
         'lv all')
             if [ -n "$centrale" ]; then
-                    # Si une centrale est spécifiée, l'ajouter au nom du fichier
-                    output_file="${station}_${consommateur}_${centrale}.csv"
-                    grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/$output_file"
+                    grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
             else
-                    # Sinon, ne pas ajouter de numéro de centrale
-                    output_file="${station}_${consommateur}.csv"
-                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;[^;]+;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/$output_file"
+                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;[^;]+;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
             fi
         ;;
         *)
             echo "Erreur : combinaison station/consommateur invalide."
-        exit 1 #voir si utile
+        exit 1
         ;;
         
 esac
 
-# progc (tri)
-
-#arret du temps
+# Arret du temps
 fin=$(date +%s)
 temps=$((fin - debut))
+echo "Filtrâge terminé"
 echo "Temps de traitement: ${temps} secondes"  
 
+# On vérifie que l'éxécutable existe bien
+if [ ! -f "../codeC/exec" ]; then
+    echo "ERREUR. L'executable n'existe pas."
+    exit 1
+fi
+
+"../codeC/exec" "tmp/fichier_filtre.csv" > sortie_c.csv
+# voir 2>resultat.log
+
+if [ $? -ne 0 ]; then
+    echo "ERREUR. L'exécution du programme a échoué."
+    exit 1
+fi
+
+if [[ -s "sortie_c.csv" ]]; then
+    if [ -n "$centrale" ]; then
+        sort -t: -k2 -n "sortie_c.csv" > "${station}_${consommateur}_${centrale}.csv"
+    else
+        sort -t: -k2 -n "sortie_c.csv" > "${station}_${consommateur}.csv"
+    fi
+    # Cas du lv all
+    if [[ "$station" == "lv" ]] && [[ "$consommateur" == "all" ]]; then
+        head -n 10 sortie_c.csv > lv_all_minmax.csv
+        tail -n 10 sortie_c.csv >> lv_all_minmax.csv
+    fi
+fi
 
