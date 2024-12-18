@@ -32,13 +32,6 @@ if [ $# -eq 4 ]; then
     fi
 fi
 
-# On vérifie que le chemin du fichier est correct
-if [ ! -f "$fichier" ]; then
-    echo "ERREUR. Le chemin du fichier passé en paramètres est incorrect."
-    cat aide.txt
-    exit 1
-fi
-
 # Vérification de l'existence du fichier CSV
 if [ ! -f "$fichier" ]; then
     echo "Erreur : Le fichier passé en paramètres n'existe pas."
@@ -63,10 +56,10 @@ if [[ "$consommateur" != "comp" ]] && [[ "$consommateur" != "indiv" ]] && [[ "$c
 fi
 
 # On créer, si besoin, le fichier 'tmp'
-if [[ ! -d "tmp" ]]; then
-    mkdir tmp
+if [[ ! -d "codeC/tmp" ]]; then
+    mkdir "codeC/tmp"
 else
-    rm tmp/*
+    rm "codeC/tmp"/*
 fi
 
 # Compilation du programme C
@@ -93,38 +86,38 @@ case "$station $consommateur" in
         ;;
         'hvb comp')
             if [ -n "$centrale" ]; then
-                    grep -E "^$centrale;[0-9]+;-;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 2,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
+                    grep -E "^$centrale;[0-9]+;-;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 2,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
                     
             else
-                    grep -E "^[0-9]+;[0-9]+;-;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 2,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
+                    grep -E "^[0-9]+;[0-9]+;-;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 2,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
             fi
         ;;
         'hva comp')
             if [ -n "$centrale" ]; then
-                    grep -E "^$centrale;[^;]+;[0-9]+;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 3,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
+                    grep -E "^$centrale;[^;]+;[0-9]+;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 3,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
             else
-                    grep -E "^[0-9]+;[^;]+;[0-9]+;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 3,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
+                    grep -E "^[0-9]+;[^;]+;[0-9]+;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 3,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
             fi
         ;;
         'lv comp')
             if [ -n "$centrale" ]; then
-                    grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
+                    grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
             else
-                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
+                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
             fi
         ;;
         'lv indiv')
             if [ -n "$centrale" ]; then
-                    grep -E "^$centrale;-;[^;]+;[0-9]+;-;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
+                    grep -E "^$centrale;-;[^;]+;[0-9]+;-;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
             else
-                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;-;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
+                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;-;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
             fi
         ;;
         'lv all')
             if [ -n "$centrale" ]; then
-                    grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
+                    grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
             else
-                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;[^;]+;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
+                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;[^;]+;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
             fi
         ;;
         *)
@@ -146,19 +139,19 @@ if [ ! -f "exec.exe" ]; then
     exit 1
 fi
 
-"./exec" "tmp/fichier_filtre.csv" > sortie_c.csv
-# voir 2>resultat.log
+./exec /codeC/tmp/fichier_filtre.csv > sortie_c.csv
+
 
 if [ $? -ne 0 ]; then
     echo "ERREUR. L'exécution du programme a échoué."
     exit 1
 fi
 
-if [[ -s "sortie_c.csv" ]]; then
+if [[ -s "codeC/result.txt" ]]; then
     if [ -n "$centrale" ]; then
-        sort -t: -k2 -n "sortie_c.csv" > "${station}_${consommateur}_${centrale}.csv"
+        cat "codeC/result.txt" > "${station}_${consommateur}_${centrale}.csv"
     else
-        sort -t: -k2 -n "sortie_c.csv" > "${station}_${consommateur}.csv"
+        cat "codeC/result.txt" > "${station}_${consommateur}.csv"
     fi
     # Cas du lv all
     if [[ "$station" == "lv" ]] && [[ "$consommateur" == "all" ]]; then
