@@ -141,12 +141,12 @@ echo "Filtrâge terminé"
 echo "Temps de traitement: ${temps} secondes"  
 
 # On vérifie que l'éxécutable existe bien
-if [ ! -f "../codeC/exec" ]; then
+if [ ! -f "exec.exe" ]; then
     echo "ERREUR. L'executable n'existe pas."
     exit 1
 fi
 
-"../codeC/exec" "tmp/fichier_filtre.csv" > sortie_c.csv
+"./exec" "tmp/fichier_filtre.csv" > sortie_c.csv
 # voir 2>resultat.log
 
 if [ $? -ne 0 ]; then
