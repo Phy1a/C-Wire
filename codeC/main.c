@@ -8,7 +8,7 @@
 int main(){
     FILE* file = NULL;
     //file = fopen("C:/Users/PC/Downloads/c-wire00.dat", "r+");
-    file = fopen("C:/Users/PC/Downloads/002.dat", "r+");
+    file = fopen("tmp/fichier_filtre.csv", "r+");
     if (file == NULL){
         printf("Imposible to open file\n");
         printf("Error code = %d \n", errno );
