@@ -13,10 +13,16 @@ git clone <URL>
 #Accéder au répertoire
 cd C-Wire
 
+```
+
+```bash
+#Avant de commencer : mettre le fichier de données à traiter dans le dossier "data"
+mv <chemin du fichier à traiter> data
+
 #Commande à écrire dans le terminal :
 ./c-wire.sh <chamin du fichier de données> <type de station> <type de consommateur> <numéro de centrale si besoin>
 #ou
-bash c-wire.sh <chamin du fichier de données> <type de station> <type de consommateur> <numéro de centrale si besoin>
+bash c-wire.sh <chemin du fichier de données> <type de station> <type de consommateur> <numéro de centrale si besoin>
 
 ```
 
