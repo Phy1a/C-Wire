@@ -13,6 +13,7 @@ done
 # On vérifie que le nombre d'argument est correct
 if [ $# -lt 3 ] || [ $# -gt 4 ]; then
     echo "ERREUR. Le nombre d'arguments passé en paramètres est incorrect."
+    echo "Temps de traitement: 0.0 secondes"
     cat aide.txt
     exit 1
 fi
@@ -27,6 +28,7 @@ if [ $# -eq 4 ]; then
     centrale=$4
     if [[ -n "$centrale" ]] && [[ ! "$centrale" =~ ^[1-9][0-9]*$ ]]; then
         echo "ERREUR. Le numéro de la centrale passé en paramètres est incorrect."
+        echo "Temps de traitement: 0.0 secondes"
         cat aide.txt
         exit 1
     fi
@@ -35,6 +37,7 @@ fi
 # Vérification de l'existence du fichier CSV
 if [ ! -f "$fichier" ]; then
     echo "Erreur : Le fichier passé en paramètres n'existe pas."
+    echo "Temps de traitement: 0.0 secondes"
     cat aide.txt
     exit 1
 fi
@@ -43,14 +46,16 @@ fi
 # Vérification du type de la station
 if [[ "$station" != "hvb" ]] && [[ "$station" != "hva" ]] && [[ "$station" != "lv" ]]; then
     echo "Erreur : Le deuxieme argument doit être 'hva', 'hvb', ou 'lv'."
+    echo "Temps de traitement: 0.0 secondes"
     cat aide.txt
     exit 1
 fi
 
 
-# Vérification du type de consomation
+# Vérification du type de consommateur
 if [[ "$consommateur" != "comp" ]] && [[ "$consommateur" != "indiv" ]] && [[ "$consommateur" != "all" ]]; then
     echo "Erreur : Le troisieme argument doit être 'comp', 'indiv', ou 'all'."
+    echo "Temps de traitement: 0.0 secondes"
     cat aide.txt
     exit 1
 fi
@@ -63,18 +68,24 @@ else
 fi
 
 # Compilation du programme C
-make clean && make
+cd codeC
+make clean
+make
 
 if [ $? -ne 0 ]; then
     echo "La compilation a échoué"
     exit 1
 fi
+cd ..
 
 #Initialisation du temps d'éxécution
 debut=$(date +%s)
 
+
 # Vérification de la combinaison de station et conso et filtrage des données
 echo "Filtrage des données en cours..."
+touch "tmp/fichier_filtre.csv"
+
 case "$station $consommateur" in
     'hva indiv' | 'hva all')
         echo "Erreur : '$station $consommateur' n'est pas une combinaison valide. Essayez 'hva comp'."
@@ -86,77 +97,88 @@ case "$station $consommateur" in
         ;;
         'hvb comp')
             if [ -n "$centrale" ]; then
-                    grep -E "^$centrale;[0-9]+;-;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 2,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
+                    grep -E "^$centrale;[0-9]+;-;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 2,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
                     
             else
-                    grep -E "^[0-9]+;[0-9]+;-;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 2,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
+                    grep -E "^[0-9]+;[0-9]+;-;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 2,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
             fi
         ;;
         'hva comp')
             if [ -n "$centrale" ]; then
-                    grep -E "^$centrale;[^;]+;[0-9]+;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 3,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
+                    grep -E "^$centrale;[^;]+;[0-9]+;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 3,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
             else
-                    grep -E "^[0-9]+;[^;]+;[0-9]+;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 3,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
+                    grep -E "^[0-9]+;[^;]+;[0-9]+;-;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 3,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
             fi
         ;;
         'lv comp')
             if [ -n "$centrale" ]; then
-                    grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
+                    grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
             else
-                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
+                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;[^;]+;-;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
             fi
         ;;
         'lv indiv')
             if [ -n "$centrale" ]; then
-                    grep -E "^$centrale;-;[^;]+;[0-9]+;-;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
+                    grep -E "^$centrale;-;[^;]+;[0-9]+;-;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
             else
-                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;-;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
+                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;-;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
             fi
         ;;
         'lv all')
             if [ -n "$centrale" ]; then
-                    grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
+                    grep -E "^$centrale;-;[^;]+;[0-9]+;[^;]+;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
             else
-                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;[^;]+;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "codeC/tmp/fichier_filtre.csv"
+                    grep -E "^[0-9]+;-;[^;]+;[0-9]+;[^;]+;[^;]+;[^;]+;[^;]+" "$fichier" | cut -d ';' -f 4,7,8 | tr '-' '0' > "tmp/fichier_filtre.csv"
             fi
         ;;
         *)
             echo "Erreur : combinaison station/consommateur invalide."
+            cat aide.txt
         exit 1
         ;;
         
 esac
 
-# Arret du temps
-fin=$(date +%s)
-temps=$((fin - debut))
-echo "Filtrâge terminé"
+echo "Filtrage terminé"
 echo "Temps de traitement: ${temps} secondes"  
 
 # On vérifie que l'éxécutable existe bien
-if [ ! -f "exec.exe" ]; then
+if [ ! -f "exec" ]; then
     echo "ERREUR. L'executable n'existe pas."
     exit 1
 fi
 
-./exec /codeC/tmp/fichier_filtre.csv > sortie_c.csv
+if [[ -d "sortie" ]]; then
+    rm -f sortie/*
+else
+    mkdir -p sortie
+fi
 
+./exec "tmp/fichier_filtre.csv" "$station" "$consommateur"
 
 if [ $? -ne 0 ]; then
     echo "ERREUR. L'exécution du programme a échoué."
     exit 1
 fi
 
-if [[ -s "codeC/result.txt" ]]; then
-    if [ -n "$centrale" ]; then
-        cat "codeC/result.txt" > "${station}_${consommateur}_${centrale}.csv"
+if [[ -s "tmp/resultat.csv" ]]; then
+    if [[ -n "$centrale" ]]; then
+        echo "$station Station:Capacity:Load" >"sortie/${station}_${consommateur}_${centrale}.csv"
+        sort -t: -k2 -n "tmp/resultat.csv" >> "sortie/${station}_${consommateur}_${centrale}.csv"
+        echo "Le fichier final "${station}_${consommateur}_${centrale}.csv" est prêt dans le dossier "sortie""
     else
-        cat "codeC/result.txt" > "${station}_${consommateur}.csv"
+        echo "$station Station:Capacity:Load" >"sortie/${station}_${consommateur}.csv"
+        sort -t: -k2 -n "tmp/resultat.csv" >> "sortie/${station}_${consommateur}.csv"
+        echo "Le fichier final "${station}_${consommateur}.csv" est prêt dans le dossier "sortie""
     fi
     # Cas du lv all
     if [[ "$station" == "lv" ]] && [[ "$consommateur" == "all" ]]; then
-        head -n 10 sortie_c.csv > lv_all_minmax.csv
-        tail -n 10 sortie_c.csv >> lv_all_minmax.csv
+        head -n 10 "tmp/resultat.csv" > "sortie/lv_all_minmax.csv"
+        tail -n 10 "tmp/resultat.csv" >> "sortie/lv_all_minmax.csv"
+        echo "Le fichier final "lv_all_minmax.csv" est prêt dans le dossier "sortie""
     fi
 fi
 
+# Arret du temps
+fin=$(date +%s)
+temps=$((fin - debut))
