@@ -184,5 +184,5 @@ fi
 # Arret du temps
 fin_total=$(date +%s)
 temps_total=$((fin_total - debut))
-echo "Temps de traitement total: ${temps_filtrage} secondes"
+echo "Temps de filtrage: ${temps_filtrage} secondes"
 echo "Temps de traitement total: ${temps_total} secondes"  
