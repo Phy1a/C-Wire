@@ -1,12 +1,8 @@
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
     RM = rm -f
-    DEL = del /f
-    MKDIR = mkdir -p
 else
     RM = del /f
-    DEL = del /f
-    MKDIR = mkdir
 endif
 
 all: exec

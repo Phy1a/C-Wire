@@ -15,14 +15,13 @@ int main(int argc, char** argv) {
         printf("Erreur avec le fichier\n");
         exit(2);
     }
-    
-    FILE* fichier_final=fopen("tmp/resultat.csv", "w");
+
+    FILE* fichier_final = fopen("tmp/resultat.csv", "w");
     if (fichier_final == NULL){
         exit(3);
     }
     traitementTotal(fichier, fichier_final);
     fclose(fichier);
     fclose(fichier_final);
-   
     return 0;
 }

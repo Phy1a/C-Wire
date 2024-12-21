@@ -171,9 +171,9 @@ AVL* recupererFichier(FILE* fichier){  // fonction pour construire un arbre AVL 
     int h = 0;
     AVL* a = NULL;
     while(fscanf(fichier, "%d;%ld;%ld", &id, &capacite, &consommation) != EOF){  // lit une ligne du fichier jusqu'à la fin (EOF)
-        if(consommation == 0){  // si la consommation est 0, on a une nouvelle station
-            a = insertAVL(a, id, capacite, &h);        }
-        else{
+        if(consommation == 0)  // si la consommation est 0, on a une nouvelle station
+            a = insertAVL(a, id, capacite, &h);
+        else
             a = majConso(a, consommation, id);
     }
     return a;
