@@ -60,10 +60,10 @@ if [[ "$consommateur" != "comp" ]] && [[ "$consommateur" != "indiv" ]] && [[ "$c
 fi
 
 # On créer, si besoin, le fichier 'tmp'
-if [[ ! -d "codeC/tmp" ]]; then
-    mkdir "codeC/tmp"
+if [[ ! -d "tmp" ]]; then
+    mkdir "tmp"
 else
-    rm "codeC/tmp"/*
+    rm "tmp"/*
 fi
 
 # Compilation du programme C
@@ -141,7 +141,9 @@ esac
 fin=$(date +%s)
 temps=$((fin - debut))
 echo "Filtrage terminé"
-echo "Temps de traitement: ${temps} secondes"  
+fin_filtrage=$(date +%s)
+temps_filtrage=$((fin_total - debut))
+
 
 # On vérifie que l'éxécutable existe bien
 if [ ! -f "codeC/exec" ]; then
@@ -181,7 +183,7 @@ if [[ -s "tmp/resultat.csv" ]]; then
 fi
 
 # Arret du temps
-fin=$(date +%s)
-temps=$((fin - debut))
-echo "Fichier résultats créé"
-echo "Temps de traitement total : ${temps} secondes"
+fin_total=$(date +%s)
+temps_total=$((fin_total - debut))
+echo "Temps de filtrage: ${temps_filtrage} secondes"
+echo "Temps de traitement total: ${temps_total} secondes"  
