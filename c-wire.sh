@@ -155,6 +155,9 @@ cd ..
 # On vérifie que l'éxécutable existe bien
 if [ ! -f "codeC/exec" ]; then
     echo "ERREUR. L'executable n'existe pas."
+    fin_erreur_1=$(date +%s)
+    temps_erreur_1=$((fin_erreur_1 - debut))
+    echo "Temps de traitement: ${temps_erreur_1} secondes"
     exit 1
 fi
 
@@ -166,7 +169,9 @@ fi
 
 if [ $? -ne 0 ]; then
     echo "ERREUR. L'exécution du programme a échoué."
-    echo "Temps de traitement : 0.0 secondes"
+    fin_erreur_2=$(date +%s)
+    temps_erreur_2=$((fin_erreur_2 - debut))
+    echo "Temps de traitement: ${temps_erreur_2} secondes"
     exit 1
 fi
 
