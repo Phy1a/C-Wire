@@ -143,7 +143,15 @@ temps_filtrage=$((fin_filtrage - debut))
 
 cd codeC
 make clean 
-make 
+make all
+
+if [ $? -eq 0 ]; then
+    echo "Compilation réussie"
+else
+    echo "La compilation a échoué"
+    exit 1
+fi
+cd ..
 
 # On vérifie que l'éxécutable existe bien
 if [ ! -f "codeC/exec.exe" ]; then
