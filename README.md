@@ -20,7 +20,7 @@
 
 L'objectif est d'analyser les données des stations afin de déterminer si elles sont en situation de surproduction ou de sous production. Pour cela, l'utilisateur doit indiquer en paramètres le type de station et de consommateurs qu'il souhaite examiner. Il peut aussi indiquer une centrale pour affiner ces recherches.
 
-[Projet](https://github.com/Phy1a/C-Wire/blob/main/Projet_C-Wire.pdf)
+[Projet-cahier des charges](https://github.com/Phy1a/C-Wire/blob/main/Projet_C-Wire.pdf)
 
 ## Guide d'utilisation
 
@@ -74,7 +74,8 @@ Si vous souhaitez afficher une aide, indiquez en paramètres `-h`.
 - `avl.h`: déclaration de toutes les fonctions et structures utilisées dans le reste du programme C
 - `makefile`: permet la compilation du programme C
 - **Rapport.pdf**:compte rendu de l'organisation, des difficultés rencontrées durant la durée du projet
-- **test**:contient les résultat finaux précédents
+- **test**:contient les résultat finaux précédent
+
 ## Arborescence du projet
 
 ```bash
