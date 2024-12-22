@@ -10,6 +10,8 @@
 
 - [Exemple d'utilisation](#Exemple-d'utilisation)
 
+- [Structure](#Structure)
+
 - [Arborescence du projet](#Arborescence-du-projet)
 
 - [Auteur](#Auteur)
