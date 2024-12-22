@@ -78,16 +78,12 @@ touch "tmp/fichier_filtre.csv"
 case "$station $consommateur" in
     'hva indiv' | 'hva all')
         echo "Erreur : '$station $consommateur' n'est pas une combinaison valide. Essayez 'hva comp'."
-            fin_erreur=$(date +%s)
-            temps_erreur=$((fin_filtrage - debut))
-            echo "Temps de traitement total: ${temps_total} secondes"
+        echo "Temps de traitement: 0.0 secondes"
             exit 1
         ;;
         'hvb indiv' | 'hvb all')
             echo "Erreur : '$station $consommateur' n'est pas une combinaison valide. Essayez 'hvb comp'."
-            fin_erreur=$(date +%s)
-            temps_erreur=$((fin_filtrage - debut))
-            echo "Temps de traitement total: ${temps_total} secondes"
+            echo "Temps de traitement: 0.0 secondes"
             exit 1
         ;;
         'hvb comp')
@@ -129,9 +125,7 @@ case "$station $consommateur" in
         *)
             echo "Erreur : combinaison station/consommateur invalide."
             cat aide.txt
-        fin_erreur=$(date +%s)
-        temps_erreur=$((fin_filtrage - debut))
-        echo "Temps de traitement total: ${temps_total} secondes"
+           echo "Temps de traitement: 0.0 secondes"
         exit 1
         ;;
         
@@ -156,9 +150,7 @@ cd ..
 # On vérifie que l'éxécutable existe bien
 if [ ! -f "codeC/exec.exe" ]; then
     echo "ERREUR. L'executable n'existe pas."
-    fin_erreur=$(date +%s)
-    temps_erreur=$((fin_filtrage - debut))
-    echo "Temps de traitement total: ${temps_total} secondes"  
+    echo "Temps de traitement: 0.0 secondes"
     exit 1
 fi
 
@@ -170,9 +162,7 @@ fi
 
 if [ $? -ne 0 ]; then
     echo "ERREUR. L'exécution du programme a échoué."
-    fin_erreur=$(date +%s)
-    temps_erreur=$((fin_filtrage - debut))
-    echo "Temps de traitement total: ${temps_total} secondes"
+    echo "Temps de traitement: 0.0 secondes"
     exit 1
 fi
 
