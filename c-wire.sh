@@ -134,14 +134,13 @@ esac
 echo "Filtrage terminé"
 fin_filtrage=$(date +%s)
 temps_filtrage=$((fin_filtrage - debut))
+echo "Temps de filtrage: ${temps_filtrage} secondes"
 
 cd codeC
 make clean 
 make all
 
-if [ $? -eq 0 ]; then
-    echo "Compilation réussie"
-else
+if [ $? -ne 0 ]; then
     echo "La compilation a échoué"
     exit 1
 fi
@@ -211,5 +210,4 @@ fi
 # Arret du temps
 fin_total=$(date +%s)
 temps_total=$((fin_total - debut))
-echo "Temps de filtrage: ${temps_filtrage} secondes"
 echo "Temps de traitement total: ${temps_total} secondes"  
