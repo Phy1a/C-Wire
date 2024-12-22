@@ -144,7 +144,7 @@ temps_filtrage=$((fin_filtrage - debut))
 
 
 # On vérifie que l'éxécutable existe bien
-if [ ! -f "codeC/exec" ]; then
+if [ ! -f "codeC/exec.exe" ]; then
     echo "ERREUR. L'executable n'existe pas."
     exit 1
 fi
@@ -155,7 +155,7 @@ else
     mkdir -p sortie
 fi
 
-./codeC/exec "tmp/fichier_filtre.csv" "$station" "$consommateur"
+./codeC/exec.exe "tmp/fichier_filtre.csv" "$station" "$consommateur"
 
 if [ $? -ne 0 ]; then
     echo "ERREUR. L'exécution du programme a échoué."
