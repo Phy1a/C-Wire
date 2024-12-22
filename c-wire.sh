@@ -201,7 +201,7 @@ if [[ -s "tmp/resultat.csv" ]]; then
                     echo "$station:$capacite:$consommation:$abs_diff"
                 fi
             done < "tmp/resultat.csv" | sort -t: -k4 -n >> "test/${station}_${consommateur}.csv"
-            head -n 11 "test/${station}_${consommateur}.csv" > "test/lv_all_minmax.csv"#on recupère les 10 premières lignes de données + l'en-tête
+            head -n 11 "test/${station}_${consommateur}.csv" > "test/lv_all_minmax.csv" #on recupère les 10 premières lignes de données + l'en-tête
             tail -n 10 "test/${station}_${consommateur}.csv" >> "test/lv_all_minmax.csv"
             echo "Le fichier final \"lv_all_minmax.csv\" est prêt dans le dossier \"test\""
         else
