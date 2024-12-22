@@ -77,10 +77,16 @@ touch "tmp/fichier_filtre.csv"
 case "$station $consommateur" in
     'hva indiv' | 'hva all')
         echo "Erreur : '$station $consommateur' n'est pas une combinaison valide. Essayez 'hva comp'."
+            fin_erreur=$(date +%s)
+            temps_erreur=$((fin_filtrage - debut))
+            echo "Temps de traitement total: ${temps_total} secondes"
             exit 1
         ;;
         'hvb indiv' | 'hvb all')
             echo "Erreur : '$station $consommateur' n'est pas une combinaison valide. Essayez 'hvb comp'."
+            fin_erreur=$(date +%s)
+            temps_erreur=$((fin_filtrage - debut))
+            echo "Temps de traitement total: ${temps_total} secondes"
             exit 1
         ;;
         'hvb comp')
@@ -122,6 +128,9 @@ case "$station $consommateur" in
         *)
             echo "Erreur : combinaison station/consommateur invalide."
             cat aide.txt
+        fin_erreur=$(date +%s)
+        temps_erreur=$((fin_filtrage - debut))
+        echo "Temps de traitement total: ${temps_total} secondes"
         exit 1
         ;;
         
@@ -135,12 +144,13 @@ temps_filtrage=$((fin_filtrage - debut))
 # On vérifie que l'éxécutable existe bien
 if [ ! -f "codeC/exec.exe" ]; then
     echo "ERREUR. L'executable n'existe pas."
+    fin_erreur=$(date +%s)
+    temps_erreur=$((fin_filtrage - debut))
+    echo "Temps de traitement total: ${temps_total} secondes"  
     exit 1
 fi
 
-if [[ -d "test" ]]; then
-    rm -f test/*
-else
+if [[ ! -d "test" ]]; then
     mkdir -p test
 fi
 
@@ -149,6 +159,9 @@ chmod +x codeC/exec.exe
 
 if [ $? -ne 0 ]; then
     echo "ERREUR. L'exécution du programme a échoué."
+    fin_erreur=$(date +%s)
+    temps_erreur=$((fin_filtrage - debut))
+    echo "Temps de traitement total: ${temps_total} secondes"
     exit 1
 fi
 
