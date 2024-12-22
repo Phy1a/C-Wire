@@ -142,10 +142,8 @@ if [ ! -f "codeC/exec.exe" ]; then
     exit 1
 fi
 
-if [[ -d "test" ]]; then
-    rm -f test/*
-else
-    mkdir -p test
+if [[ ! -d "test" ]]; then
+    mkdir "test"
 fi
 
 ./codeC/exec.exe "tmp/fichier_filtre.csv" "$station" "$consommateur"
