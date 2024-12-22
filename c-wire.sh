@@ -147,7 +147,7 @@ fi
 cd ..
 
 # On vérifie que l'éxécutable existe bien
-if [ ! -f "codeC/exec.exe" ]; then
+if [ ! -f "codeC/exec" ]; then
     echo "ERREUR. L'executable n'existe pas."
     exit 1
 fi
@@ -156,7 +156,7 @@ if [[ ! -d "test" ]]; then
     mkdir "test"
 fi
 
-./codeC/exec.exe "tmp/fichier_filtre.csv" "$station" "$consommateur"
+./codeC/exec "tmp/fichier_filtre.csv" "$station" "$consommateur"
 
 if [ $? -ne 0 ]; then
     echo "ERREUR. L'exécution du programme a échoué."
