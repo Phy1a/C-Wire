@@ -138,11 +138,9 @@ case "$station $consommateur" in
         
 esac
 
-fin=$(date +%s)
-temps=$((fin - debut))
 echo "Filtrage terminé"
 fin_filtrage=$(date +%s)
-temps_filtrage=$((fin_total - debut))
+temps_filtrage=$((fin_filtrage - debut))
 
 
 # On vérifie que l'éxécutable existe bien
@@ -157,7 +155,7 @@ else
     mkdir -p sortie
 fi
 
-./exec "tmp/fichier_filtre.csv" "$station" "$consommateur"
+./codeC/exec "tmp/fichier_filtre.csv" "$station" "$consommateur"
 
 if [ $? -ne 0 ]; then
     echo "ERREUR. L'exécution du programme a échoué."
@@ -166,19 +164,43 @@ fi
 
 if [[ -s "tmp/resultat.csv" ]]; then
     if [[ -n "$centrale" ]]; then
-        echo "$station Station:Capacity:Load" >"sortie/${station}_${consommateur}_${centrale}.csv"
-        sort -t: -k2 -n "tmp/resultat.csv" >> "sortie/${station}_${consommateur}_${centrale}.csv"
-        echo "Le fichier final "${station}_${consommateur}_${centrale}.csv" est prêt dans le dossier "sortie""
+        # Cas du lv all
+        if [[ "$station" == "lv" ]] && [[ "$consommateur" == "all" ]]; then
+            echo "$station:Capacité:Consommation:Difference capacité/consommation" >"sortie/${station}_${consommateur}_${centrale}.csv"
+            while IFS=: read -r station capacite consommation; do
+                if [[ "$station" != "Station" ]]; then
+                    diff=$((capacite - consommation))
+                    abs_diff=$((diff < 0 ? -diff : diff))
+                    echo "$station:$capacite:$consommation:$abs_diff"
+                fi
+            done < "tmp/resultat.csv" | sort -t: -k4 -n >> "sortie/${station}_${consommateur}_${centrale}.csv"
+            head -n 10 "sortie/${station}_${consommateur}_${centrale}.csv" > "sortie/lv_all_minmax.csv"
+            tail -n 10 "sortie/${station}_${consommateur}_${centrale}.csv" >> "sortie/lv_all_minmax.csv"
+            echo "Le fichier final \"lv_all_minmax.csv\" est prêt dans le dossier \"sortie\""
+        else
+            echo "$station:Capacité:Consommation" >"sortie/${station}_${consommateur}_${centrale}.csv"
+            sort -t: -k2 -n "tmp/resultat.csv" >> "sortie/${station}_${consommateur}_${centrale}.csv"
+            echo "Le fichier final \"${station}_${consommateur}_${centrale}.csv\" est prêt dans le dossier \"sortie\""
+        fi
     else
-        echo "$station Station:Capacity:Load" >"sortie/${station}_${consommateur}.csv"
-        sort -t: -k2 -n "tmp/resultat.csv" >> "sortie/${station}_${consommateur}.csv"
-        echo "Le fichier final "${station}_${consommateur}.csv" est prêt dans le dossier "sortie""
-    fi
-    # Cas du lv all
-    if [[ "$station" == "lv" ]] && [[ "$consommateur" == "all" ]]; then
-        head -n 10 "tmp/resultat.csv" > "sortie/lv_all_minmax.csv"
-        tail -n 10 "tmp/resultat.csv" >> "sortie/lv_all_minmax.csv"
-        echo "Le fichier final "lv_all_minmax.csv" est prêt dans le dossier "sortie""
+        # Cas du lv all
+        if [[ "$station" == "lv" ]] && [[ "$consommateur" == "all" ]]; then
+            echo "$station:Capacité:Consommation:Difference capacité/consommation" >"sortie/${station}_${consommateur}.csv"
+            while IFS=: read -r station capacite consommation; do
+                if [[ "$station" != "Station" ]]; then
+                    diff=$((capacite - consommation))
+                    abs_diff=$((diff < 0 ? -diff : diff))
+                    echo "$station:$capacite:$consommation:$abs_diff"
+                fi
+            done < "tmp/resultat.csv" | sort -t: -k4 -n >> "sortie/${station}_${consommateur}.csv"
+            head -n 10 "sortie/${station}_${consommateur}.csv" > "sortie/lv_all_minmax.csv"
+            tail -n 10 "sortie/${station}_${consommateur}.csv" >> "sortie/lv_all_minmax.csv"
+            echo "Le fichier final \"lv_all_minmax.csv\" est prêt dans le dossier \"sortie\""
+        else
+            echo "$station:Capacité:Consommation" >"sortie/${station}_${consommateur}.csv"
+            sort -t: -k2 -n "tmp/resultat.csv" >> "sortie/${station}_${consommateur}.csv"
+            echo "Le fichier final \"${station}_${consommateur}.csv\" est prêt dans le dossier \"sortie\""
+        fi
     fi
 fi
 
