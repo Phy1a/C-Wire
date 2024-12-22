@@ -34,7 +34,7 @@ bash c-wire.sh <chemin du fichier de données> <type de station> <type de consom
 - lv comp
 - lv all
 
-Si vous souhaitez afficher une aide, indiquez en paramètres -h.
+Si vous souhaitez afficher une aide, indiquez en paramètres `-h`.
 
 ## Exemple d'utilisation
 
