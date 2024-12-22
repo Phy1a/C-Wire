@@ -2,12 +2,17 @@
 
 ## Table des matières
 
--[Objectif](#Objectif)
--[Guide d'utilisation](#Guide d'utilisation)
--[Options possibles](#Options possibles)
--[Exemple d'utilisation](#Exemple d'utilisation)
--[Arborescence du projet](#Arborescence du projet)
--[Auteur](#Auteur)
+- [Objectif](#Objectif)
+
+- [Guide d'utilisation](#Guide-d'utilisation)
+
+- [Options possibles](#Options-possibles)
+
+- [Exemple d'utilisation](#Exemple-d'utilisation)
+
+- [Arborescence du projet](#Arborescence-du-projet)
+
+- [Auteur](#Auteur)
 
 ## Objectif
 
