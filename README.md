@@ -42,6 +42,7 @@ bash c-wire.sh <chemin du fichier de données> <type de station> <type de consom
 ```bash
 C-Wire/
 ├── c-wire.sh              # Script shell principal
+├── aide.txt               # Texte d'aide 
 ├── codeC/                 # Code source C
 │   ├── makefile           # Fichier Makefile pour la compilation
 │   ├── avl.c              # Implémentation de l'arbre AVL
