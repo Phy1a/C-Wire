@@ -59,6 +59,7 @@ if [[ "$consommateur" != "comp" ]] && [[ "$consommateur" != "indiv" ]] && [[ "$c
     exit 1
 fi
 
+
 # On créer, si besoin, le fichier 'tmp'
 if [[ ! -d "tmp" ]]; then
     mkdir "tmp"
@@ -140,6 +141,9 @@ echo "Filtrage terminé"
 fin_filtrage=$(date +%s)
 temps_filtrage=$((fin_filtrage - debut))
 
+cd codeC
+make clean 
+make 
 
 # On vérifie que l'éxécutable existe bien
 if [ ! -f "codeC/exec.exe" ]; then
@@ -151,10 +155,9 @@ if [ ! -f "codeC/exec.exe" ]; then
 fi
 
 if [[ ! -d "test" ]]; then
-    mkdir -p test
+    mkdir "test"
 fi
 
-chmod +x codeC/exec.exe
 ./codeC/exec.exe "tmp/fichier_filtre.csv" "$station" "$consommateur"
 
 if [ $? -ne 0 ]; then
