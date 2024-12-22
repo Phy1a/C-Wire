@@ -66,17 +66,6 @@ else
     rm "tmp"/*
 fi
 
-# Compilation du programme C
-cd codeC
-make clean
-make
-
-if [ $? -ne 0 ]; then
-    echo "La compilation a échoué"
-    exit 1
-fi
-cd ..
-
 #Initialisation du temps d'éxécution
 debut=$(date +%s)
 
@@ -155,6 +144,7 @@ else
     mkdir -p sortie
 fi
 
+chmod +x codeC/exec.exe
 ./codeC/exec.exe "tmp/fichier_filtre.csv" "$station" "$consommateur"
 
 if [ $? -ne 0 ]; then
@@ -166,40 +156,40 @@ if [[ -s "tmp/resultat.csv" ]]; then
     if [[ -n "$centrale" ]]; then
         # Cas du lv all
         if [[ "$station" == "lv" ]] && [[ "$consommateur" == "all" ]]; then
-            echo "$station:Capacité:Consommation:Difference capacité/consommation" >"sortie/${station}_${consommateur}_${centrale}.csv"
+            echo "$station:Capacité:Consommation:Difference capacité/consommation" >"test/${station}_${consommateur}_${centrale}.csv"
             while IFS=: read -r station capacite consommation; do
                 if [[ "$station" != "Station" ]]; then
                     diff=$((capacite - consommation))
                     abs_diff=$((diff < 0 ? -diff : diff))
                     echo "$station:$capacite:$consommation:$abs_diff"
                 fi
-            done < "tmp/resultat.csv" | sort -t: -k4 -n >> "sortie/${station}_${consommateur}_${centrale}.csv"
-            head -n 10 "sortie/${station}_${consommateur}_${centrale}.csv" > "sortie/lv_all_minmax.csv"
-            tail -n 10 "sortie/${station}_${consommateur}_${centrale}.csv" >> "sortie/lv_all_minmax.csv"
-            echo "Le fichier final \"lv_all_minmax.csv\" est prêt dans le dossier \"sortie\""
+            done < "tmp/resultat.csv" | sort -t: -k4 -n >> "test/${station}_${consommateur}_${centrale}.csv"
+            head -n 10 "test/${station}_${consommateur}_${centrale}.csv" > "test/lv_all_minmax.csv"
+            tail -n 10 "test/${station}_${consommateur}_${centrale}.csv" >> "test/lv_all_minmax.csv"
+            echo "Le fichier final \"lv_all_minmax.csv\" est prêt dans le dossier \"test\""
         else
-            echo "$station:Capacité:Consommation" >"sortie/${station}_${consommateur}_${centrale}.csv"
-            sort -t: -k2 -n "tmp/resultat.csv" >> "sortie/${station}_${consommateur}_${centrale}.csv"
-            echo "Le fichier final \"${station}_${consommateur}_${centrale}.csv\" est prêt dans le dossier \"sortie\""
+            echo "$station:Capacité:Consommation" >"test/${station}_${consommateur}_${centrale}.csv"
+            sort -t: -k2 -n "tmp/resultat.csv" >> "test/${station}_${consommateur}_${centrale}.csv"
+            echo "Le fichier final \"${station}_${consommateur}_${centrale}.csv\" est prêt dans le dossier \"test\""
         fi
     else
         # Cas du lv all
         if [[ "$station" == "lv" ]] && [[ "$consommateur" == "all" ]]; then
-            echo "$station:Capacité:Consommation:Difference capacité/consommation" >"sortie/${station}_${consommateur}.csv"
+            echo "$station:Capacité:Consommation:Difference capacité/consommation" >"test/${station}_${consommateur}.csv"
             while IFS=: read -r station capacite consommation; do
                 if [[ "$station" != "Station" ]]; then
                     diff=$((capacite - consommation))
                     abs_diff=$((diff < 0 ? -diff : diff))
                     echo "$station:$capacite:$consommation:$abs_diff"
                 fi
-            done < "tmp/resultat.csv" | sort -t: -k4 -n >> "sortie/${station}_${consommateur}.csv"
-            head -n 10 "sortie/${station}_${consommateur}.csv" > "sortie/lv_all_minmax.csv"
-            tail -n 10 "sortie/${station}_${consommateur}.csv" >> "sortie/lv_all_minmax.csv"
-            echo "Le fichier final \"lv_all_minmax.csv\" est prêt dans le dossier \"sortie\""
+            done < "tmp/resultat.csv" | sort -t: -k4 -n >> "test/${station}_${consommateur}.csv"
+            head -n 10 "test/${station}_${consommateur}.csv" > "test/lv_all_minmax.csv"
+            tail -n 10 "test/${station}_${consommateur}.csv" >> "test/lv_all_minmax.csv"
+            echo "Le fichier final \"lv_all_minmax.csv\" est prêt dans le dossier \"test\""
         else
-            echo "$station:Capacité:Consommation" >"sortie/${station}_${consommateur}.csv"
-            sort -t: -k2 -n "tmp/resultat.csv" >> "sortie/${station}_${consommateur}.csv"
-            echo "Le fichier final \"${station}_${consommateur}.csv\" est prêt dans le dossier \"sortie\""
+            echo "$station:Capacité:Consommation" >"test/${station}_${consommateur}.csv"
+            sort -t: -k2 -n "tmp/resultat.csv" >> "test/${station}_${consommateur}.csv"
+            echo "Le fichier final \"${station}_${consommateur}.csv\" est prêt dans le dossier \"test\""
         fi
     fi
 fi
