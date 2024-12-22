@@ -8,13 +8,16 @@ L'objectif est d'analyser les données des stations afin de déterminer si elles
 
 ```bash
 #Cloner le dépot
-git clone <URL>
+git clone https://github.com/Phy1a/C-Wire.git
 
 #Accéder au répertoire
 cd C-Wire
 
-#Avant de commencer : mettre le fichier de données à traiter dans le dossier "data"
-mv <chemin du fichier à traiter> data
+#Ajouter les droits d'exécution au script shell
+chmod +x c-wire.sh
+
+#Avant de commencer : mettre le fichier de données à traiter dans le dossier "input"
+mv <chemin du fichier à traiter> input
 
 #Commande à écrire dans le terminal :
 ./c-wire.sh <chamin du fichier de données> <type de station> <type de consommateur> <numéro de centrale si besoin>
@@ -22,6 +25,19 @@ mv <chemin du fichier à traiter> data
 bash c-wire.sh <chemin du fichier de données> <type de station> <type de consommateur> <numéro de centrale si besoin>
 
 ```
+
+## Exemple d'utilisation
+
+```bash
+#Traitement des hvb comp de toutes les centrales
+./c-wire.sh input/c-wire_v25.dat hvb comp
+
+#Traitement des hva comp de la centrale 4
+./c-wire.sh input/c-wire_v25.dat hva comp 4
+
+```
+
+## Arborescence du projet
 
 ## Auteur
 

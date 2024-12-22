@@ -1,53 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
 #include "avl.h"
-#include "data.h"
 
-int main(){
-    FILE* file = NULL;
-    //file = fopen("C:/Users/PC/Downloads/c-wire00.dat", "r+");
-    file = fopen("tmp/fichier_filtre.csv", "r+");
-    if (file == NULL){
-        printf("Imposible to open file\n");
-        printf("Error code = %d \n", errno );
-        printf("Error message = %s \n", strerror(errno) );
-        return 1 ;
-    }
-
+int main(int argc, char** argv) {
     
-    char sentence[85];
-    //creer fichier sorti
-
-    Data *d;
-    AVL *a = NULL;
-
-    while (fgets(sentence,49,file) != NULL){
-        d = transcript(file, sentence);
-        if (d==NULL)
-            return 1;
-        if(insertAVL(&a,*d)) // error detected
-            return 1;
+    if (argc < 3) {
+        printf( "Erreur d'argument\n");
+        exit(1);
     }
     
-    //recup donner dans arbre et mettre dans le fihier de sorti
-    //fermer fichier de sorti
-
-    FILE* result_file;
-    result_file = fopen("result.txt", "w");
-    if (file == NULL) {
-        printf("Imposible to open file\n");
-        printf("Error code = %d \n", errno );
-        printf("Error message = %s \n", strerror(errno) );
-        return 1;
+    FILE* fichier = fopen(argv[1], "r");
+    if (fichier == NULL) {
+        printf("Erreur avec le fichier\n");
+        exit(2);
     }
 
-    fclose(file);
-
-    AVLtoFile(a, result_file); // view results
-    deleteTree(&a);
-    
-    fclose(result_file);
+    FILE* fichier_final = fopen("tmp/resultat.csv", "w");
+    if (fichier_final == NULL){
+        exit(3);
+    }
+    traitementTotal(fichier, fichier_final);
+    fclose(fichier);
+    fclose(fichier_final);
     return 0;
 }

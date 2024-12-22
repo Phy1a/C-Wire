@@ -5,15 +5,12 @@ else
     RM = del /f
 endif
 
-all: exec
-data.o: data.c data.h
-	gcc -c data.c -o data.o
+all : exec
 avl.o: avl.c avl.h
 	gcc -c avl.c -o avl.o
-main.o: main.c data.h avl.h
+main.o: main.c avl.h
 	gcc -c main.c -o main.o
-exec: main.o data.o avl.o
-	gcc main.o data.o avl.o -o exec
-
+exec: main.o avl.o
+	gcc main.o avl.o -o exec
 clean:
 	$(RM) *.o exec
