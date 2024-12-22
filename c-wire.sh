@@ -67,6 +67,12 @@ else
     rm "tmp"/*
 fi
 
+if [[ ! -d "tmp"]]; then
+    mkdir "graphs"
+else
+    echo "Le dossier "graphs" existe déja"
+fi
+
 #Initialisation du temps d'éxécution
 debut=$(date +%s)
 
@@ -204,6 +210,26 @@ if [[ -s "tmp/resultat.csv" ]]; then
         fi
     fi
 fi
+
+gnuplot << script_gnuplot
+    set terminal pngcairo size 1200,700 enhanced font "Comic Sans MS,12"
+    set output 'graphs/lv_all_minmax.png'
+    set title "Postes LV - Capacité et Consommation" font "Comic Sans MS,16"
+    set xlabel "Poste LV" font "Comic Sans MS,12"
+    set ylabel "Valeurs (kWh)" font "Comic Sans MS,12"
+    set grid ytics
+    set style fill solid border -1
+    set boxwidth 0.4
+    set key outside top center font "Comic Sans MS,10"
+    set xtics rotate by -45 font "Comic Sans MS,10"
+    #specifier le separateur
+    set datafile separator ":"
+    # Tracer les barres pour Capacité et Consommation
+    plot 'sortie/lv_all_minmax.csv' skip 1 using 2:xtic(1) with boxes lc rgb "red" title "Capacité", \
+     '' skip 1 using 3:xtic(1) with boxes lc rgb "green" title "Consommation"
+script_gnuplot
+
+echo "Graphique: "graphs/lv_all_minmax.png""
 
 # Arret du temps
 fin_total=$(date +%s)
