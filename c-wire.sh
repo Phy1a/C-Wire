@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # On vérifie si l'option -h est passée en argument
 for arg in "$@"; do
     if [ "$arg" == "-h" ]; then
@@ -139,11 +138,13 @@ case "$station $consommateur" in
         
 esac
 
+fin=$(date +%s)
+temps=$((fin - debut))
 echo "Filtrage terminé"
 echo "Temps de traitement: ${temps} secondes"  
 
 # On vérifie que l'éxécutable existe bien
-if [ ! -f "exec" ]; then
+if [ ! -f "codeC/exec" ]; then
     echo "ERREUR. L'executable n'existe pas."
     exit 1
 fi
@@ -182,3 +183,5 @@ fi
 # Arret du temps
 fin=$(date +%s)
 temps=$((fin - debut))
+echo "Fichier résultats créé"
+echo "Temps de traitement total : ${temps} secondes"
