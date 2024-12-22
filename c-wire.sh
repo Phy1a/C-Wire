@@ -138,10 +138,10 @@ if [ ! -f "codeC/exec.exe" ]; then
     exit 1
 fi
 
-if [[ -d "sortie" ]]; then
-    rm -f sortie/*
+if [[ -d "test" ]]; then
+    rm -f test/*
 else
-    mkdir -p sortie
+    mkdir -p test
 fi
 
 chmod +x codeC/exec.exe
