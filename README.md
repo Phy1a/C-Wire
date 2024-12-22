@@ -39,6 +39,24 @@ bash c-wire.sh <chemin du fichier de données> <type de station> <type de consom
 
 ## Arborescence du projet
 
+```bash
+C-Wire/
+├── c-wire.sh              # Script shell principal
+├── codeC/                 # Code source C
+│   ├── makefile           # Fichier Makefile pour la compilation
+│   ├── avl.c              # Implémentation de l'arbre AVL
+│   ├── avl.h              # Déclaration des fonctions et structures AVL
+│   └── main.c             # Programme principal
+├── imput/                 # Données d'entrée
+│   ├── c-wire_v00.csv     # Fichier de données 
+│   └── input/             # Fichiers d'entrée supplémentaires
+├── output/                # Résultats de sortie générés à l'exécution
+│   └── hvb_comp_2.csv     # Exemple de fichier de sortie
+├── test/                  # Résultats finaux précédents
+├── tmp/                   # Fichiers temporaires
+└── Rapport                # Compte rendu sur l'organisation de l'équipe et les difficultés rencontrées
+
+```
 ## Auteur
 
 ASTIER Célia
