@@ -26,6 +26,16 @@ bash c-wire.sh <chemin du fichier de données> <type de station> <type de consom
 
 ```
 
+## Options possibles
+
+- hvb comp
+- hva comp
+- lv indiv
+- lv comp
+- lv all
+
+Si vous souhaitez afficher une aide, indiquez en paramètres -h.
+
 ## Exemple d'utilisation
 
 ```bash
