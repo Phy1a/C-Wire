@@ -1,8 +1,17 @@
 # C-Wire
 
+## Table des matières
+
+-[Objectif](#Objectif)
+-[Guide d'utilisation](#Guide d'utilisation)
+-[Options possibles](#Options possibles)
+-[Exemple d'utilisation](#Exemple d'utilisation)
+-[Arborescence du projet](#Arborescence du projet)
+-[Auteur](#Auteur)
+
 ## Objectif
 
-L'objectif est d'analyser les données des stations afin de déterminer si elles sont en situation de surproduction ou de sousproduction. Pour cela, l'utilisateur doit indiquer en paramètres le type de station et de consommateurs qu'il souhaite examiner. Il peut aussi indiquer une centrale pour affiner ces recherches.
+L'objectif est d'analyser les données des stations afin de déterminer si elles sont en situation de surproduction ou de sous production. Pour cela, l'utilisateur doit indiquer en paramètres le type de station et de consommateurs qu'il souhaite examiner. Il peut aussi indiquer une centrale pour affiner ces recherches.
 
 ## Guide d'utilisation
 
