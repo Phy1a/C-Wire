@@ -217,6 +217,12 @@ if [[ -s "tmp/resultat.csv" ]]; then
     fi
 fi
 
+# Vérifier si Gnuplot est installé
+if ! command -v gnuplot &> /dev/null; then
+	echo "Erreur : Gnuplot n'est pas installé."
+	exit 1
+fi
+
 gnuplot << script_gnuplot
     set terminal pngcairo size 1200,700 enhanced font "Comic Sans MS,12"
     set output 'graphs/lv_all_minmax.png'
