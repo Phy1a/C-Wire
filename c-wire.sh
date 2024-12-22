@@ -166,6 +166,7 @@ fi
 
 if [ $? -ne 0 ]; then
     echo "ERREUR. L'exécution du programme a échoué."
+    echo "Temps de traitement : 0.0 secondes"
     exit 1
 fi
 
