@@ -8,7 +8,7 @@ L'objectif est d'analyser les données des stations afin de déterminer si elles
 
 ```bash
 #Cloner le dépot
-git clone <URL>
+git clone https://github.com/Phy1a/C-Wire.git
 
 #Accéder au répertoire
 cd C-Wire
