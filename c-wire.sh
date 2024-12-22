@@ -67,7 +67,7 @@ else
     rm "tmp"/*
 fi
 
-if [[ ! -d "tmp"]]; then
+if [[ ! -d "graphs" ]]; then
     mkdir "graphs"
 else
     echo "Le dossier "graphs" existe déja"
