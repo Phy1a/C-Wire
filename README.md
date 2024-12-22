@@ -82,26 +82,28 @@ Si vous souhaitez afficher une aide, indiquez en paramètres `-h`.
 - `makefile`: permet la compilation du programme C
 - **Rapport.pdf**:compte rendu de l'organisation, des difficultés rencontrées durant la durée du projet
 - **test**:contient les résultat finaux précédent
+- **graphs**: contient les graphiques de lv_all_minmax.csv
 
 ## Arborescence du projet
 
 ```bash
-C-Wire/
+C-Wire
 ├── c-wire.sh                    # Script shell principal
 ├── aide.txt                     # Texte d'aide 
-├── codeC/                       # Code source C
+├── codeC                        # Code source C
 │   ├── makefile                 # Fichier Makefile pour la compilation
 │   ├── avl.c                    # Implémentation de l'arbre AVL
 │   ├── avl.h                    # Déclaration des fonctions et structures AVL
 │   └── main.c                   # Programme principal
-├── input/                       # Données d'entrée
+├── input                        # Données d'entrée
 │   ├── c-wire_v00.csv           # Fichier de données 
 │   └── <fichier de données>     # Fichiers d'entrée supplémentaires
-├── output/                      # Résultats de sortie générés à l'exécution
+├── output.                      # Résultats de sortie générés à l'exécution
 │   └── hvb_comp_2.csv           # Exemple de fichier de sortie
-├── test/                        # Résultats finaux précédents
-├── tmp/                         # Fichiers temporaires
-└── Rapport                      #  Compte rendu sur l'organisation de l'équipe et les difficultés rencontrées
+├── test                         # Résultats finaux précédents
+├── tmp                          # Fichiers temporaires
+├── graphs                       # Graphiques
+└── Rapport.pdf                  #  Compte rendu sur l'organisation de l'équipe et les difficultés rencontrées
 
 ```
 ## Auteur
